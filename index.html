@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PilotLogix | Persaud Airlines</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Persaud Air">
+
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <style>
+    :root {
+      --bg: #F2F2F7;
+      --card: #FFFFFF;
+      --text: #000000;
+      --accent: #007AFF;
+      --secondary: #8E8E93;
+      --border: #C6C6C8;
+      --red: #FF3B30;
+      --green: #34C759;
+      --purple: #5856D6;
+    }
+
+    [data-theme="dark"] {
+      --bg: #000000;
+      --card: #1C1C1E;
+      --text: #FFFFFF;
+      --accent: #0A84FF;
+      --border: #38383A;
+    }
+
+    [data-theme="ll-mode"] {
+      --bg: #000000;
+      --card: #000000;
+      --text: #FF0000;
+      --accent: #FF0000;
+      --secondary: #660000;
+      --border: #440000;
+      --red: #FF0000;
+      --green: #880000;
+      --purple: #880000;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: env(safe-area-inset-top) 20px 40px 20px;
+      transition: 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .brand-header {
+      text-align: center;
+      padding: 20px 0 5px 0;
+    }
+
+    .brand-header h2 {
+      margin: 0;
+      letter-spacing: 3px;
+      font-weight: 800;
+      font-size: 12px;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+
+    .theme-bar {
+      display: flex;
+      background: var(--card);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin: 15px auto 25px auto;
+      width: fit-content;
+    }
+
+    .theme-btn {
+      background: transparent;
+      color: var(--text);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .theme-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      text-align: center;
+    }
+
+    .stat-box h4 {
+      margin: 0;
+      font-size: 10px;
+      color: var(--secondary);
+      text-transform: uppercase;
+    }
+
+    .stat-box p {
+      margin: 5px 0 0 0;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .btn-main {
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
+    .backup-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-alt {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th {
+      text-align: left;
+      font-size: 11px;
+      color: var(--accent);
+      padding: 12px 5px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 14px 5px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .delete-btn {
+      color: var(--red);
+      background: none;
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body data-theme="light">
+
+  <div class="brand-header">
+    <h2>Persaud Airlines</h2>
+  </div>
+
+  <div class="theme-bar">
+    <button class="theme-btn active" id="btn-light" onclick="setTheme('light')">Light</button>
+    <button class="theme-btn" id="btn-dark" onclick="setTheme('dark')">Dark</button>
+    <button class="theme-btn" id="btn-ll" onclick="setTheme('ll-mode')">LL Mode</button>
+  </div>
+
+  <div class="card stats-grid">
+    <div class="stat-box">
+      <h4>Total Flight Hours</h4>
+      <p id="stat-total">0.0</p>
+    </div>
+    <div class="stat-box">
+      <h4>Flights Logged</h4>
+      <p id="stat-count">0</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <input type="date" id="date">
+    <input type="text" id="mission" placeholder="Mission / Route (e.g. CYTZ Local)">
+    <div style="display: flex; gap: 12px;">
+      <input type="number" id="dual" placeholder="Dual Hrs" step="0.1">
+      <input type="number" id="solo" placeholder="Solo Hrs" step="0.1">
+    </div>
+    <button class="btn-main" onclick="addEntry()">Log Flight Entry</button>
+  </div>
+
+  <div class="card" style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="toggleSort()">Date ↕</th>
+          <th>Mission</th>
+          <th>Dual</th>
+          <th>Solo</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="logBody"></tbody>
+    </table>
+  </div>
+
+  <div class="backup-row">
+    <button class="btn-alt" style="background: var(--green);" onclick="exportLog()">Backup to iCloud</button>
+    <button class="btn-alt" style="background: var(--purple);" onclick="importLog()">Restore Backup</button>
+  </div>
+
+  <script>
+    let entries = JSON.parse(localStorage.getItem('pilotLog')) || [];
+    let sortAsc = false;
+
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      const btnId = theme === 'll-mode' ? 'btn-ll' : 'btn-' + theme;
+      document.getElementById(btnId).classList.add('active');
+    }
+
+    function addEntry() {
+      const d = document.getElementById('date').value;
+      const m = document.getElementById('mission').value;
+      const du = parseFloat(document.getElementById('dual').value) || 0;
+      const so = parseFloat(document.getElementById('solo').value) || 0;
+      if (!d || !m) {
+        alert("Please enter a date and mission name.");
+        return;
+      }
+      entries.push({
+        id: Date.now(),
+        date: d,
+        mission: m,
+        dual: du,
+        solo: so,
+        total: (du + so).toFixed(1)
+      });
+      // Reset form
+      document.getElementById('mission').value = '';
+      document.getElementById('dual').value = '';
+      document.getElementById('solo').value = '';
+      saveAndRender();
+    }
+
+    function deleteEntry(id) {
+      if (confirm("Delete this flight?")) {
+        entries = entries.filter(e => e.id !== id);
+        saveAndRender();
+      }
+    }
+
+    function toggleSort() {
+      sortAsc = !sortAsc;
+      renderEntries();
+    }
+
+    function saveAndRender() {
+      localStorage.setItem('pilotLog', JSON.stringify(entries));
+      renderEntries();
+    }
+
+    function renderEntries() {
+      const sorted = [...entries].sort((a, b) =>
+        sortAsc ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date)
+      );
+      let totalSum = 0;
+      const html = sorted.map(e => {
+        totalSum += parseFloat(e.total);
+        return `<tr>
+                <td>${e.date}</td>
+                <td>${e.mission}</td>
+                <td>${e.dual}</td>
+                <td>${e.solo}</td>
+                <td><strong>${e.total}</strong></td>
+                <td><button class="delete-btn" onclick="deleteEntry(${e.id})">×</button></td>
+            </tr>`;
+      }).join('');
+      document.getElementById('logBody').innerHTML = html;
+      document.getElementById('stat-total').innerText = totalSum.toFixed(1);
+      document.getElementById('stat-count').innerText = entries.length;
+    }
+    // REDUNDANCY LOGIC
+    function exportLog() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(entries));
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href", dataStr);
+      downloadAnchorNode.setAttribute("download", "Persaud_Airlines_Logbook.json");
+      document.body.appendChild(downloadAnchorNode);
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+    }
+
+    function importLog() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = readerEvent => {
+          try {
+            const content = JSON.parse(readerEvent.target.result);
+            if (confirm("Restore from backup? This will overwrite current entries.")) {
+              entries = content;
+              saveAndRender();
+            }
+          } catch (err) {
+            alert("Error reading backup file.");
+          }
+        }
+        reader.readAsText(file);
+      }
+      input.click();
+    }
+    renderEntries();
+  </script>
+
+</body>
+
+</html>
